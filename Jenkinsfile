@@ -21,7 +21,7 @@ pipeline {
     stages {
         stage('Clone Code') {
             steps {
-                git 'https://github.com/saddammohd941/simplecutomerapp.git'
+                git url: 'https://github.com/your-org/config-repo.git', branch: 'main'
             }
         }
         stage("mvn build") {
