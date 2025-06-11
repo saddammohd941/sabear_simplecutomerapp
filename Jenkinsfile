@@ -39,7 +39,6 @@ pipeline {
                     sh '''
                         sonar-scanner \
                         -Dsonar.projectKey=Ncodeit \
-                        -Dsonar.organization=my-org-name \
                         -Dsonar.projectName=Ncodeit \
                         -Dsonar.projectVersion=2.0 \
                         -Dsonar.sources=src \
