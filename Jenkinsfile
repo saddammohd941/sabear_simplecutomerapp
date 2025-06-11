@@ -35,18 +35,20 @@ pipeline {
         }
         stage('SonarCloud') {
             steps {
-                withSonarQubeEnv('sonarqube-server') {
-                    sh """
+                withCredentials([string(credentialsId: 'sonarqube-server', variable: 'SONAR_TOKEN')]) {
+                    sh '''
                         sonar-scanner \
                         -Dsonar.projectKey=Ncodeit \
+                        -Dsonar.organization=my-org-name \
                         -Dsonar.projectName=Ncodeit \
                         -Dsonar.projectVersion=2.0 \
                         -Dsonar.sources=src \
-                        -Dsonar.binaries=target/classes/com/visualpathit/account/controller \
+                        -Dsonar.java.binaries=target/classes \
                         -Dsonar.junit.reportsPath=target/surefire-reports \
-                        -Dsonar.jacoco.reportPath=target/jacoco.exec \
-                        -Dsonar.java.binaries=target/classes
-                    """
+                        -Dsonar.jacoco.reportPaths=target/jacoco.exec \
+                        -Dsonar.login=$SONAR_TOKEN \
+                        -Dsonar.host.url=https://sonarcloud.io
+                    '''
                 }
             }
         }
