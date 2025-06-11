@@ -35,10 +35,13 @@ pipeline {
         }
         stage('SonarCloud') {
             steps {
-                withCredentials([string(credentialsId: 'sonarqube-server', variable: 'SONAR_TOKEN')]) {
+                withCredentials([string(credentialsId: 'sonarcloud_token', variable: 'SONAR_TOKEN')]) {
                     sh '''
-                        sonar-scanner \
-                        -Dsonar.projectKey=Ncodeit \
+                        export PATH=$PATH:/opt/sonar-scanner/bin
+
+                        sonar-scanner -X \
+                        -Dsonar.projectKey=my-org-name_Ncodeit \
+                        -Dsonar.organization=my-org-name \
                         -Dsonar.projectName=Ncodeit \
                         -Dsonar.projectVersion=2.0 \
                         -Dsonar.sources=src \
