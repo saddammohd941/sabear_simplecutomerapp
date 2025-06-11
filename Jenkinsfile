@@ -18,7 +18,6 @@ pipeline {
         NEXUS_REPOSITORY = "VProfile-1"
         // Jenkins credential id to authenticate to Nexus OSS
         NEXUS_CREDENTIAL_ID = "nexus-server"
-	SCANNER_HOME = tool 'SonarQube-Scanner'
     }
     stages {
         stage('Clone Code') {
