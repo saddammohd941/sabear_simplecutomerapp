@@ -21,12 +21,11 @@ pipeline {
 	SCANNER_HOME = tool 'SonarQube-Scanner'
     }
     stages {
-        stage("clone code") {
+        stage('Clone Code') {
             steps {
-                script {
-                    // Let's clone the source
-                    git 'https://github.com/betawins/sabear_simplecutomerapp.git';
-                }
+                git branch: 'main',
+                    url: 'https://github.com/betawins/simplecutomerapp.git',
+                    credentialsId: 'saddammohd941_credentials'
             }
         }
         stage("mvn build") {
