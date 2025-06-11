@@ -40,14 +40,14 @@ pipeline {
                         export PATH=$PATH:/opt/sonar-scanner/bin
 
                         sonar-scanner -X \
-                        -Dsonar.projectKey=my-org-name_Ncodeit \
-                        -Dsonar.organization=my-org-name \
+                        -Dsonar.projectKey=Ncodeit \
                         -Dsonar.projectName=Ncodeit \
                         -Dsonar.projectVersion=2.0 \
-                        -Dsonar.sources=src \
-                        -Dsonar.java.binaries=target/classes \
+                        -Dsonar.sources=/var/lib/jenkins/workspace/$JOB_NAME/src/ \
+                        -Dsonar.binaries=target/classes/com/visualpathit/account/controller/ \
                         -Dsonar.junit.reportsPath=target/surefire-reports \
                         -Dsonar.jacoco.reportPaths=target/jacoco.exec \
+                        -Dsonar.java.binaries=src/com/room/sample '
                         -Dsonar.login=$SONAR_TOKEN \
                         -Dsonar.host.url=https://sonarcloud.io
                     '''
