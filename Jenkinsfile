@@ -35,7 +35,7 @@ pipeline {
         }
         stage('SonarCloud') {
             steps {
-                withCredentials([string(credentialsId: 'sonarcloud_token', variable: 'SONAR_TOKEN')]) {
+                withCredentials([string(credentialsId: 'sonarqube-server', variable: 'SONAR_TOKEN')]) {
                     sh '''
                         export PATH=$PATH:/opt/sonar-scanner/bin
 
