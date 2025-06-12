@@ -45,7 +45,7 @@ pipeline {
                         -Dsonar.projectVersion=2.0 \
                         -Dsonar.organization=saddammohd941 \
                         -Dsonar.sources=src \
-                        -Dsonar.binaries=target/classes/com/visualpathit/account/controller/ \
+                        -Dsonar.binaries=build/classes \
                         -Dsonar.junit.reportsPath=target/surefire-reports \
                         -Dsonar.jacoco.reportPaths=target/jacoco.exec \
                         -Dsonar.login=$SONAR_TOKEN \
