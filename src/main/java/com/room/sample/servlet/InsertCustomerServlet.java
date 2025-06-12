@@ -35,11 +35,7 @@ public class InsertCustomerServlet extends HttpServlet{
             dispatcher.forward(request, response);
            
         } catch (Exception e) {
-            LOGGER.severe("Exception occurred: " + e.getMessage());
-            // Optional detailed stack trace:
-            // StringWriter sw = new StringWriter();
-            // e.printStackTrace(new PrintWriter(sw));
-            // LOGGER.severe(sw.toString());
+            e.printStackTrace();
         } 
         
     }
