@@ -66,7 +66,7 @@ pipeline {
             }
         }
 	/*
-        stage('publish to nexus') {
+        stage('Publish to Nexus') {
             steps {
                 withEnv(["JAVA_HOME=${tool 'JDK_17'}", "PATH+JAVA=${tool 'JDK_17'}/bin"]) {
                     withMaven(maven: 'MAVEN_3.9.6') {
@@ -94,8 +94,9 @@ pipeline {
             steps {
                 sshagent(['tomcat_credentials']) {
                     sh """
-                        echo "Deploying WAR to Tomcat..."
-                        scp target/*.war ${TOMCAT_USER}@${TOMCAT_HOST}:${TOMCAT_WEBAPPS_DIR}/
+                        scp -o StrictHostKeyChecking=no target/simplecustomerapp.war tomcat@10.168.133.22:/opt/tomcat/webapps/
+                        ssh -o StrictHostKeyChecking=no tomcat@10.168.133.22 "chown tomcat:tomcat /opt/tomcat/webapps/simplecustomerapp.war"
+			ssh -o StrictHostKeyChecking=no tomcat@10.168.133.22 "systemctl restart tomcat"
                     """
                 }
             }
