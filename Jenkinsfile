@@ -94,9 +94,9 @@ pipeline {
             steps {
                 sshagent(['tomcat_credentials']) {
                     sh """
-                        scp -o StrictHostKeyChecking=no target/simplecustomerapp.war tomcat@10.168.133.22:/opt/tomcat/webapps/
-                        ssh -o StrictHostKeyChecking=no tomcat@10.168.133.22 "chown tomcat:tomcat /opt/tomcat/webapps/simplecustomerapp.war"
-			ssh -o StrictHostKeyChecking=no tomcat@10.168.133.22 "systemctl restart tomcat"
+                        scp -o StrictHostKeyChecking=no target/simplecustomerapp.war root@10.168.133.22:/opt/tomcat/webapps/
+                        ssh -o StrictHostKeyChecking=no root@10.168.133.22 "chown tomcat:tomcat /opt/tomcat/webapps/simplecustomerapp.war"
+			ssh -o StrictHostKeyChecking=no root@10.168.133.22 "systemctl restart tomcat"
                     """
                 }
             }
