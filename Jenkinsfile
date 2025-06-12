@@ -78,7 +78,7 @@ pipeline {
                             nexusUrl: '10.168.138.60:8081',
                             groupId: groupId,
                             version: version,
-                            repository: version.endsWith('-SNAPSHOT') ? 'simplecutomerapp-snapshots' : 'simplecutomerapp-releases',
+                            repository: version.endsWith('-SNAPSHOT') ? 'maven-snapshots' : 'maven-releases',
                             credentialsId: 'nexus-server',
                             artifacts: [
                                 [artifactId: artifactId, classifier: '', file: "target/${artifactId}-${version}.war", type: 'war']
