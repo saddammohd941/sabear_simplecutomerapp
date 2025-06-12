@@ -67,16 +67,19 @@ pipeline {
         }
 	stage('Publish to Nexus') {
             steps {
+                echo "Starting Publish to Nexus stage"
+                sh 'ls -l target/' // Debug WAR file
                 withMaven(maven: 'MAVEN_3.9.6') {
                     script {
                         def pom = readMavenPom file: 'pom.xml'
+                        echo "Uploading to Nexus: groupId=${pom.groupId}, artifactId=${pom.artifactId}, version=${pom.version}"
                         nexusArtifactUploader(
                             nexusVersion: 'nexus3',
                             protocol: 'http',
                             nexusUrl: '10.168.138.60:8081',
                             groupId: pom.groupId,
                             version: pom.version,
-                            repository: 'maven-releases', // Force maven-releases
+                            repository: 'maven-snapshots',
                             credentialsId: 'nexus-credentials',
                             artifacts: [
                                 [artifactId: pom.artifactId, classifier: '', file: "target/${pom.artifactId}-${pom.version}.war", type: 'war']
@@ -84,6 +87,7 @@ pipeline {
                         )
                     }
                 }
+                echo "Publish to Nexus stage completed"
             }
         }
 	stage('Deploy to Tomcat') {
