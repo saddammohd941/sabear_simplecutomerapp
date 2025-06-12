@@ -65,6 +65,7 @@ pipeline {
                 }
             }
         }
+	/*
 	stage('Publish to Nexus') {
             steps {
                 withMaven(maven: 'MAVEN_3.9.6') {
@@ -86,6 +87,7 @@ pipeline {
                 }
             }
         }
+	*/
 	stage('Deploy to Tomcat') {
             steps {
                 sshagent(['tomcat-credentials']) {
