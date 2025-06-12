@@ -10,7 +10,7 @@
 
 ### Use the below code in sonarqube analysis report.
 
-```xml
+```groovy
                         # Run SonarCloud analysis
                         sonar-scanner -X \\
                         -Dsonar.projectKey=simplecustomerapp \\
