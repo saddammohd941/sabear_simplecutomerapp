@@ -16,7 +16,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Updated JaCoCo version -->
         <jacoco.version>0.8.12</jacoco.version>
     </properties>
 
@@ -79,7 +78,6 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <!-- Explicitly configure XML report -->
                         <configuration>
                             <formats>
                                 <format>XML</format>
@@ -89,6 +87,25 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Maven Deploy Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
         </plugins>
     </build>
+
+    <!-- Distribution Management for Nexus -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus</id>
+            <url>http://10.168.138.60:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus</id>
+            <url>http://10.168.138.60:8081/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
 </project>
