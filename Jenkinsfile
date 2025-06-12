@@ -39,7 +39,7 @@ pipeline {
                     sh '''
                         export PATH=$PATH:/opt/sonar-scanner/bin
 			
-			ant compile
+			mvn clean compile
 
                         sonar-scanner -X \
                         -Dsonar.projectKey=simplecutomerapp \
