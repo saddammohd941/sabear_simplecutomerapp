@@ -43,6 +43,7 @@ pipeline {
                         -Dsonar.projectKey=Ncodeit \
                         -Dsonar.projectName=Ncodeit \
                         -Dsonar.projectVersion=2.0 \
+                        -Dsonar.organization=your_org_key \
                         -Dsonar.sources=/var/lib/jenkins/workspace/$JOB_NAME/src/ \
                         -Dsonar.binaries=target/classes/com/visualpathit/account/controller/ \
                         -Dsonar.junit.reportsPath=target/surefire-reports \
