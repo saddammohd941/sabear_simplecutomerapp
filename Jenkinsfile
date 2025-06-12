@@ -44,7 +44,7 @@ pipeline {
                         -Dsonar.projectName=simplecutomerapp \
                         -Dsonar.projectVersion=2.0 \
                         -Dsonar.organization=saddammohd941 \
-                        -Dsonar.sources=/var/lib/jenkins/workspace/$JOB_NAME/src/ \
+                        -Dsonar.sources=src \
                         -Dsonar.binaries=target/classes/com/visualpathit/account/controller/ \
                         -Dsonar.junit.reportsPath=target/surefire-reports \
                         -Dsonar.jacoco.reportPaths=target/jacoco.exec \
