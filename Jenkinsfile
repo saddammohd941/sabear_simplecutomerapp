@@ -36,12 +36,12 @@ pipeline {
         stage('SonarCloud') {
             steps {
                 withCredentials([string(credentialsId: 'sonar', variable: 'SONAR_TOKEN')]) {
-                    sh """
+                    sh """#!/bin/bash
                         export PATH=$PATH:/opt/sonar-scanner/bin
 
                         # Ensure proper source directory layout
                         mkdir -p src/main/java
-                        find src -name "*.java" -exec mv --parents {} src/main/java/ \;
+                        find src -name "*.java" -exec mv --parents {} src/main/java/ \\;
                         rm -rf src
 
                         # Build project
