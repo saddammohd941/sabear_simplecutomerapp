@@ -92,7 +92,7 @@ pipeline {
 	*/
         stage('Deploy to Tomcat') {
             steps {
-                sshagent(['tomcat_credentials']) {
+                sshagent(['tomcat-credentials']) {
                     sh """
                         scp -o StrictHostKeyChecking=no target/simplecustomerapp.war root@10.168.133.22:/opt/tomcat/webapps/
                         ssh -o StrictHostKeyChecking=no root@10.168.133.22 "chown tomcat:tomcat /opt/tomcat/webapps/simplecustomerapp.war"
