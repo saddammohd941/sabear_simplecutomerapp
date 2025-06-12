@@ -36,7 +36,7 @@ pipeline {
         stage('SonarCloud') {
             steps {
                 withCredentials([string(credentialsId: 'sonar', variable: 'SONAR_TOKEN')]) {
-                    sh '''
+                    sh """
                         export PATH=$PATH:/opt/sonar-scanner/bin
 
                         # Ensure proper source directory layout
@@ -62,7 +62,7 @@ pipeline {
                         -Dsonar.jacoco.reportPaths=target/jacoco.exec \
                         -Dsonar.login=$SONAR_TOKEN \
                         -Dsonar.host.url=https://sonarcloud.io
-                    '''
+                    """
                 }
             }
         }
