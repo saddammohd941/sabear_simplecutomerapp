@@ -73,8 +73,8 @@ pipeline {
                         nexusVersion: 'nexus3',
                         protocol: 'http',
                         nexusUrl: 'http://10.168.138.60:8081', // Replace with your Nexus URL
-                        groupId: pom.groupId,
-                        version: pom.version,
+                        groupId: junit,
+                        version: 1.0.0-SNAPSHOT,
                         repository: 'VProfile-1', // or 'maven-snapshots'
                         credentialsId: 'nexus-server', // Replace with your Nexus credentials ID
                         artifacts: [
