@@ -67,20 +67,22 @@ pipeline {
         }
         stage('publish to nexus') {
             steps {
-                script {
-                    def pom = readMavenPom file: 'pom.xml'
-                    nexusArtifactUploader(
-                        nexusVersion: 'nexus3',
-                        protocol: 'http',
-                        nexusUrl: '10.168.138.60:8081', // Replace with your Nexus URL
-                        groupId: pom.groupId,
-                        version: pom.version,
-                        repository: pom.version.endsWith('-SNAPSHOT') ? 'simplecutomerapp-snapshots' : 'simplecutomerapp-releases', // or 'maven-snapshots'
-                        credentialsId: 'nexus-server', // Replace with your Nexus credentials ID
-                        artifacts: [
-                            [artifactId: pom.artifactId, classifier: '', file: "target/${pom.artifactId}-${pom.version}.war", type: 'war']
-                        ]
-                    )
+                withMaven(maven: 'MAVEN_3.9.6') {
+                    script {
+                        def pom = readMavenPom file: 'pom.xml'
+                        nexusArtifactUploader(
+                            nexusVersion: 'nexus3',
+                            protocol: 'http',
+                            nexusUrl: '10.168.138.60:8081',
+                            groupId: pom.groupId,
+                            version: pom.version,
+                            repository: pom.version.endsWith('-SNAPSHOT') ? 'simplecutomerapp-snapshots' : 'simplecutomerapp-releases', // or 'maven-snapshots'
+                            credentialsId: 'nexus-server',
+                            artifacts: [
+                                [artifactId: pom.artifactId, classifier: '', file: "target/${pom.artifactId}-${pom.version}.war", type: 'war']
+                            ]
+                        )
+                    }
                 }
             }
         }
