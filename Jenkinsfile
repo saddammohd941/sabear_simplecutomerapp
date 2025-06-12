@@ -32,7 +32,8 @@ pipeline {
                     sh 'mvn -Dmaven.test.failure.ignore=true clean install'
                 }
             }
-        }        stage('SonarCloud') {
+        }
+        stage('SonarCloud') {
             steps {
                 withCredentials([string(credentialsId: 'sonar', variable: 'SONAR_TOKEN')]) {
                     sh """#!/bin/bash
