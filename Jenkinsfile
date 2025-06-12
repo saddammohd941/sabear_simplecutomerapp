@@ -39,33 +39,11 @@ pipeline {
                     sh """#!/bin/bash
                         export PATH=\$PATH:/opt/sonar-scanner/bin
 
-                        # Clean up any previously bad structure
-                        rm -rf src/main/java/src
-
-                        # Create src/main/java if it doesn't exist
-                        mkdir -p src/main/java
-
-                        # Copy only .java files NOT already in src/main/java or src/test/java
-                        if find src -name "*.java" | grep -q .; then
-                        find src -name "*.java" \\
-                            ! -path "src/main/java/*" \\
-                            ! -path "src/test/java/*" \\
-                            -exec cp --parents {} src/main/java/ \\;
-                        else
-                        echo "No Java files found in src, skipping move."
-                        fi
-
                         # Compile project
                         mvn clean compile
 
                         echo "Compiled files:"
                         ls -R target/classes
-
-                        # Confirm source directory exists
-                        if [ ! -d src/main/java ] || [ -z "\$(ls -A src/main/java)" ]; then
-                        echo "src/main/java does not exist or is empty. Skipping SonarCloud analysis."
-                        exit 1
-                        fi
 
                         # Run SonarCloud analysis
                         sonar-scanner -X \\
@@ -74,6 +52,7 @@ pipeline {
                         -Dsonar.projectVersion=2.0 \\
                         -Dsonar.organization=saddammohd941 \\
                         -Dsonar.sources=src/main/java \\
+                        -Dsonar.tests=src/test/java \\
                         -Dsonar.binaries=target/classes \\
                         -Dsonar.junit.reportsPath=target/surefire-reports \\
                         -Dsonar.jacoco.reportPaths=target/jacoco.exec \\
