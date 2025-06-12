@@ -39,11 +39,18 @@ pipeline {
                     sh '''
                         export PATH=$PATH:/opt/sonar-scanner/bin
 
+                        # Ensure proper source directory layout
+                        mkdir -p src/main/java
+                        find src -name "*.java" -exec mv --parents {} src/main/java/ \;
+                        rm -rf src
+
+                        # Build project
                         mvn clean compile
 
                         echo "Compiled files:"
                         ls -R target/classes
 
+                        # Run Sonar Scanner
                         sonar-scanner -X \
                         -Dsonar.projectKey=simplecutomerapp \
                         -Dsonar.projectName=simplecutomerapp \
