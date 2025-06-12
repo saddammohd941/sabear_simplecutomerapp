@@ -21,7 +21,7 @@ pipeline {
     stages {
         stage('Clone Code') {
             steps {
-                git credentialsId: 'saddammohd941_credentials', url: 'https://github.com/saddammohd941/simplecutomerapp.git', branch: 'main'
+                git credentialsId: 'saddammohd941_credentials', url: 'https://github.com/saddammohd941/simplecustomerapp.git', branch: 'main'
             }
         }
         stage("mvn build") {
@@ -50,8 +50,8 @@ pipeline {
 
                         # Run SonarCloud analysis
                         sonar-scanner -X \\
-                        -Dsonar.projectKey=simplecutomerapp \\
-                        -Dsonar.projectName=simplecutomerapp \\
+                        -Dsonar.projectKey=simplecustomerapp \\
+                        -Dsonar.projectName=simplecustomerapp \\
                         -Dsonar.projectVersion=2.0 \\
                         -Dsonar.organization=saddammohd941 \\
                         -Dsonar.sources=src/main/java \\
