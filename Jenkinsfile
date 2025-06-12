@@ -38,8 +38,11 @@ pipeline {
                 withCredentials([string(credentialsId: 'sonar', variable: 'SONAR_TOKEN')]) {
                     sh '''
                         export PATH=$PATH:/opt/sonar-scanner/bin
-			
-			mvn clean compile
+
+                        mvn clean compile
+
+                        echo "Compiled files:"
+                        ls -R target/classes
 
                         sonar-scanner -X \
                         -Dsonar.projectKey=simplecutomerapp \
