@@ -67,23 +67,23 @@ pipeline {
         }
         stage('publish to nexus') {
             steps {
-                withMaven(maven: 'MAVEN_3.9.6') {
-                    script {
-                        def groupId = 'com.example'
-                        def artifactId = 'simplecustomerapp'
-                        def version = '1.0.0-SNAPSHOT'
-                        nexusArtifactUploader(
-                            nexusVersion: 'nexus3',
-                            protocol: 'http',
-                            nexusUrl: '10.168.138.60:8081',
-                            groupId: groupId,
-                            version: version,
-                            repository: version.endsWith('-SNAPSHOT') ? 'maven-snapshots' : 'maven-releases',
-                            credentialsId: 'nexus-server',
-                            artifacts: [
-                                [artifactId: artifactId, classifier: '', file: "target/${artifactId}-${version}.war", type: 'war']
-                            ]
-                        )
+                withEnv(["JAVA_HOME=${tool 'JDK_17'}", "PATH+JAVA=${tool 'JDK_17'}/bin"]) {
+                    withMaven(maven: 'MAVEN_3.9.6') {
+                        script {
+                            def pom = readMavenPom file: 'pom.xml'
+                            nexusArtifactUploader(
+                                nexusVersion: 'nexus3',
+                                protocol: 'http',
+                                nexusUrl: '10.168.138.60:8081',
+                                groupId: pom.groupId,
+                                version: pom.version,
+                                repository: pom.version.endsWith('-SNAPSHOT') ? 'maven-snapshots' : 'maven-releases',
+                                credentialsId: 'nexus-server',
+                                artifacts: [
+                                    [artifactId: pom.artifactId, classifier: '', file: "target/${pom.artifactId}-${pom.version}.war", type: 'war']
+                                ]
+                            )
+                        }
                     }
                 }
             }
