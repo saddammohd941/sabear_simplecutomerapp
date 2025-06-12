@@ -39,28 +39,33 @@ pipeline {
                     sh """#!/bin/bash
                         export PATH=$PATH:/opt/sonar-scanner/bin
 
-                        # Ensure proper source directory layout
                         mkdir -p src/main/java
-                        find src -name "*.java" -exec mv --parents {} src/main/java/ \\;
-                        rm -rf src
+                        if find src -name "*.java" | grep -q .; then
+                        find src -name "*.java" -exec cp --parents {} src/main/java/ \\;
+                        else
+                        echo "No Java files found in src, skipping move."
+                        fi
 
-                        # Build project
                         mvn clean compile
 
                         echo "Compiled files:"
                         ls -R target/classes
 
-                        # Run Sonar Scanner
-                        sonar-scanner -X \
-                        -Dsonar.projectKey=simplecutomerapp \
-                        -Dsonar.projectName=simplecutomerapp \
-                        -Dsonar.projectVersion=2.0 \
-                        -Dsonar.organization=saddammohd941 \
-                        -Dsonar.sources=src/main/java \
-                        -Dsonar.binaries=target/classes \
-                        -Dsonar.junit.reportsPath=target/surefire-reports \
-                        -Dsonar.jacoco.reportPaths=target/jacoco.exec \
-                        -Dsonar.login=$SONAR_TOKEN \
+                        if [ ! -d src/main/java ] || [ -z "\$(ls -A src/main/java)" ]; then
+                        echo "src/main/java does not exist or is empty. Skipping SonarCloud analysis."
+                        exit 1
+                        fi
+
+                        sonar-scanner -X \\
+                        -Dsonar.projectKey=simplecutomerapp \\
+                        -Dsonar.projectName=simplecutomerapp \\
+                        -Dsonar.projectVersion=2.0 \\
+                        -Dsonar.organization=saddammohd941 \\
+                        -Dsonar.sources=src/main/java \\
+                        -Dsonar.binaries=target/classes \\
+                        -Dsonar.junit.reportsPath=target/surefire-reports \\
+                        -Dsonar.jacoco.reportPaths=target/jacoco.exec \\
+                        -Dsonar.login=$SONAR_TOKEN \\
                         -Dsonar.host.url=https://sonarcloud.io
                     """
                 }
