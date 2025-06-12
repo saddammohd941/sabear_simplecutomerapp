@@ -40,10 +40,10 @@ pipeline {
                         export PATH=$PATH:/opt/sonar-scanner/bin
 
                         sonar-scanner -X \
-                        -Dsonar.projectKey=Ncodeit \
-                        -Dsonar.projectName=Ncodeit \
+                        -Dsonar.projectKey=simplecutomerapp \
+                        -Dsonar.projectName=simplecutomerapp \
                         -Dsonar.projectVersion=2.0 \
-                        -Dsonar.organization=your_org_key \
+                        -Dsonar.organization=saddammohd941 \
                         -Dsonar.sources=/var/lib/jenkins/workspace/$JOB_NAME/src/ \
                         -Dsonar.binaries=target/classes/com/visualpathit/account/controller/ \
                         -Dsonar.junit.reportsPath=target/surefire-reports \
