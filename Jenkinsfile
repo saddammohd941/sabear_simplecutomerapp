@@ -24,13 +24,15 @@ pipeline {
                 git credentialsId: 'saddammohd941_credentials', url: 'https://github.com/saddammohd941/simplecustomerapp.git', branch: 'main'
             }
         }
-        stage("mvn build") {
+	stage('mvn build') {
             steps {
+                echo "Starting mvn build stage"
                 script {
-                    // If you are using Windows then you should use "bat" step
-                    // Since unit testing is out of the scope we skip them
-                    sh 'mvn -Dmaven.test.failure.ignore=true clean install'
+                    sh 'mvn -B -DskipTests clean package'
+                    sh 'ls -l target/' // Debug
+                    sh '[ -f target/SimpleCustomerApp-1.0.0-SNAPSHOT.war ] || exit 1' // Fail if WAR missing
                 }
+                echo "mvn build completed"
             }
         }
         stage('SonarCloud') {
@@ -68,26 +70,10 @@ pipeline {
 	stage('Publish to Nexus') {
             steps {
                 echo "Starting Publish to Nexus stage"
-                sh 'ls -l target/' // Debug WAR file
-                withMaven(maven: 'MAVEN_3.9.6') {
-                    script {
-                        def pom = readMavenPom file: 'pom.xml'
-                        echo "Uploading to Nexus: groupId=${pom.groupId}, artifactId=${pom.artifactId}, version=${pom.version}"
-                        nexusArtifactUploader(
-                            nexusVersion: 'nexus3',
-                            protocol: 'http',
-                            nexusUrl: '10.168.138.60:8081',
-                            groupId: pom.groupId,
-                            version: pom.version,
-                            repository: 'maven-snapshots',
-                            credentialsId: 'nexus-credentials',
-                            artifacts: [
-                                [artifactId: pom.artifactId, classifier: '', file: "target/${pom.artifactId}-${pom.version}.war", type: 'war']
-                            ]
-                        )
-                    }
-                }
-                echo "Publish to Nexus stage completed"
+                sh 'ls -l target/' // Debug
+                sh 'ls -l /home/jenkins/.m2/settings.xml' // Verify settings.xml
+                sh 'mvn deploy -DskipTests'
+                echo "Publish to Nexus completed"
             }
         }
 	stage('Deploy to Tomcat') {
