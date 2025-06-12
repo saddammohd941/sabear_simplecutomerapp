@@ -69,19 +69,24 @@ pipeline {
             steps {
                 withMaven(maven: 'MAVEN_3.9.6') {
                     script {
-                        def pom = readMavenPom file: 'pom.xml'
-                        nexusArtifactUploader(
-                            nexusVersion: 'nexus3',
-                            protocol: 'http',
-                            nexusUrl: '10.168.138.60:8081',
-                            groupId: pom.groupId,
-                            version: pom.version,
-                            repository: pom.version.endsWith('-SNAPSHOT') ? 'maven-snapshots' : 'maven-releases', // or 'maven-snapshots'
-                            credentialsId: 'nexus-server',
-                            artifacts: [
-                                [artifactId: pom.artifactId, classifier: '', file: "target/${pom.artifactId}-${pom.version}.war", type: 'war']
-                            ]
-                        )
+                        try {
+                            def pom = readMavenPom file: 'pom.xml'
+                            nexusArtifactUploader(
+                                nexusVersion: 'nexus3',
+                                protocol: 'http',
+                                nexusUrl: '10.168.138.60:8081',
+                                groupId: pom.groupId,
+                                version: pom.version,
+                                repository: pom.version.endsWith('-SNAPSHOT') ? 'maven-snapshots' : 'maven-releases',
+                                credentialsId: 'nexus-server',
+                                artifacts: [
+                                    [artifactId: pom.artifactId, classifier: '', file: "target/${pom.artifactId}-${pom.version}.war", type: 'war']
+                                ]
+                            )
+                        } catch (Exception e) {
+                            echo "nexusArtifactUploader failed: ${e.message}. Falling back to mvn deploy."
+                            sh 'mvn deploy -DskipTests'
+                        }
                     }
                 }
             }
