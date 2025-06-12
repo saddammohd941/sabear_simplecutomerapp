@@ -65,6 +65,7 @@ pipeline {
                 }
             }
         }
+	/*
         stage('publish to nexus') {
             steps {
                 withEnv(["JAVA_HOME=${tool 'JDK_17'}", "PATH+JAVA=${tool 'JDK_17'}/bin"]) {
@@ -85,6 +86,17 @@ pipeline {
                             )
                         }
                     }
+                }
+            }
+        }
+	*/
+        stage('Deploy to Tomcat') {
+            steps {
+                sshagent(['tomcat_credentials']) {
+                    sh """
+                        echo "Deploying WAR to Tomcat..."
+                        scp target/*.war ${TOMCAT_USER}@${TOMCAT_HOST}:${TOMCAT_WEBAPPS_DIR}/
+                    """
                 }
             }
         }
