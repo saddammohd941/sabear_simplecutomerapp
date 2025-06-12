@@ -49,7 +49,7 @@ pipeline {
                         -Dsonar.projectName=simplecutomerapp \
                         -Dsonar.projectVersion=2.0 \
                         -Dsonar.organization=saddammohd941 \
-                        -Dsonar.sources=src \
+                        -Dsonar.sources=src/main/java \
                         -Dsonar.binaries=target/classes \
                         -Dsonar.junit.reportsPath=target/surefire-reports \
                         -Dsonar.jacoco.reportPaths=target/jacoco.exec \
