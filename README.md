@@ -10,7 +10,7 @@
 
 ### Use the below code in sonarqube analysis report.
 
-```bash
+```xml
                         # Run SonarCloud analysis
                         sonar-scanner -X \\
                         -Dsonar.projectKey=simplecustomerapp \\
