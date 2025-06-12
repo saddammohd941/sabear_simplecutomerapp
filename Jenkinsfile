@@ -5,7 +5,6 @@ pipeline {
     tools {
         // Note: this should match with the tool name configured in your jenkins instance (JENKINS_URL/configureTools/)
         maven "MAVEN_3.9.6"
-	jdk "JDK17"
     }
 	 environment {
         // This can be nexus3 or nexus2
