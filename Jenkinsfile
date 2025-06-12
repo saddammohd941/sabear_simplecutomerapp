@@ -75,7 +75,7 @@ pipeline {
                         nexusUrl: '10.168.138.60:8081', // Replace with your Nexus URL
                         groupId: pom.groupId,
                         version: pom.version,
-                        repository: pom.version.endsWith('-SNAPSHOT') ? 'maven-snapshots' : 'maven-releases', // or 'maven-snapshots'
+                        repository: pom.version.endsWith('-SNAPSHOT') ? 'simplecutomerapp-snapshots' : 'simplecutomerapp-releases', // or 'maven-snapshots'
                         credentialsId: 'nexus-server', // Replace with your Nexus credentials ID
                         artifacts: [
                             [artifactId: pom.artifactId, classifier: '', file: "target/${pom.artifactId}-${pom.version}.war", type: 'war']
