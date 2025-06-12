@@ -39,8 +39,8 @@ pipeline {
                     sh """#!/bin/bash
                         export PATH=\$PATH:/opt/sonar-scanner/bin
 
-                        # Compile project
-                        mvn clean compile
+                        # Compile and run tests to generate coverage
+                        mvn clean test
 
                         echo "Compiled files:"
                         ls -R target/classes
@@ -53,9 +53,9 @@ pipeline {
                         -Dsonar.organization=saddammohd941 \\
                         -Dsonar.sources=src/main/java \\
                         -Dsonar.tests=src/test/java \\
-                        -Dsonar.binaries=target/SimpleCustomerApp/WEB-INF/classes \\
+                        -Dsonar.java.binaries=target/classes \\
                         -Dsonar.junit.reportsPath=target/surefire-reports \\
-                        -Dsonar.jacoco.reportPaths=target/jacoco.exec \\
+                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \\
                         -Dsonar.login=\$SONAR_TOKEN \\
                         -Dsonar.host.url=https://sonarcloud.io
                     """
