@@ -70,9 +70,21 @@ pipeline {
 	stage('Publish to Nexus') {
             steps {
                 echo "Starting Publish to Nexus stage"
-                sh 'ls -l target/' // Debug
-                sh 'ls -l /home/jenkins/.m2/settings.xml' // Verify settings.xml
-                sh 'mvn deploy -DskipTests'
+                sh 'ls -l target/'
+                sh 'ls -l /home/jenkins/.m2/settings.xml'
+                script {
+                    try {
+                        sh 'mvn deploy -DskipTests'
+                    } catch (Exception e) {
+                        echo "mvn deploy failed: ${e.message}"
+                        withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                            sh '''
+                                curl -v -u $NEXUS_USER:$NEXUS_PASS --upload-file target/SimpleCustomerApp-1.0.0-SNAPSHOT.war http://10.168.138.60:8081/repository/maven-snapshots/com/javatpoint/SimpleCustomerApp/1.0.0-SNAPSHOT/SimpleCustomerApp-1.0.0-SNAPSHOT.war
+                                curl -v -u $NEXUS_USER:$NEXUS_PASS --upload-file pom.xml http://10.168.138.60:8081/repository/maven-snapshots/com/javatpoint/SimpleCustomerApp/1.0.0-SNAPSHOT/SimpleCustomerApp-1.0.0-SNAPSHOT.pom
+                            '''
+                        }
+                    }
+                }
                 echo "Publish to Nexus completed"
             }
         }
