@@ -39,11 +39,14 @@ pipeline {
                     sh """#!/bin/bash
                         export PATH=\$PATH:/opt/sonar-scanner/bin
 
-                        # Compile and run tests to generate coverage
-                        mvn clean test
+                        # Compile, test, and package to generate classes and coverage reports
+                        mvn clean package
 
                         echo "Compiled files:"
                         ls -R target/classes
+
+                        echo "JaCoCo report files:"
+                        ls -R target/site/jacoco
 
                         # Run SonarCloud analysis
                         sonar-scanner -X \\
