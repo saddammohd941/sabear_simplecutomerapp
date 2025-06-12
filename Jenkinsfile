@@ -16,7 +16,7 @@ pipeline {
         // Repository where we will upload the artifact
         NEXUS_REPOSITORY = "maven-releases"
         // Jenkins credential id to authenticate to Nexus OSS
-        NEXUS_CREDENTIAL_ID = "nexus-server"
+        NEXUS_CREDENTIAL_ID = "nexus-credentials"
     }
     stages {
         stage('Clone Code') {
@@ -65,7 +65,6 @@ pipeline {
                 }
             }
         }
-	/*
 	stage('Publish to Nexus') {
             steps {
                 withMaven(maven: 'MAVEN_3.9.6') {
@@ -78,7 +77,7 @@ pipeline {
                             groupId: pom.groupId,
                             version: pom.version,
                             repository: 'maven-releases', // Force maven-releases
-                            credentialsId: 'nexus-server',
+                            credentialsId: 'nexus-credentials',
                             artifacts: [
                                 [artifactId: pom.artifactId, classifier: '', file: "target/${pom.artifactId}-${pom.version}.war", type: 'war']
                             ]
@@ -87,7 +86,6 @@ pipeline {
                 }
             }
         }
-	*/
 	stage('Deploy to Tomcat') {
             steps {
                 sshagent(['tomcat-credentials']) {
