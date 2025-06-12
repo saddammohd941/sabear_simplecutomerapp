@@ -65,7 +65,6 @@ pipeline {
                 }
             }
         }
-	/*
         stage('Publish to Nexus') {
             steps {
                 withEnv(["JAVA_HOME=${tool 'JDK_17'}", "PATH+JAVA=${tool 'JDK_17'}/bin"]) {
@@ -89,14 +88,14 @@ pipeline {
                 }
             }
         }
-	*/
-        stage('Deploy to Tomcat') {
+	stage('Deploy to Tomcat') {
             steps {
                 sshagent(['tomcat-credentials']) {
                     sh """
-                        scp -P 2222 -o StrictHostKeyChecking=no target/simplecustomerapp.war root@10.168.133.22:/opt/tomcat/webapps/
-                        ssh -P 2222 -o StrictHostKeyChecking=no root@10.168.133.22 "chown tomcat:tomcat /opt/tomcat/webapps/simplecustomerapp.war"
-			ssh -P 2222 -o StrictHostKeyChecking=no root@10.168.133.22 "systemctl restart tomcat"
+                        ls -l target/
+                        scp -P 2222 -o StrictHostKeyChecking=no target/SimpleCustomerApp-1.0.0-SNAPSHOT.war root@10.168.133.22:/opt/tomcat/webapps/
+                        ssh -p 2222 -o StrictHostKeyChecking=no root@10.168.133.22 "chown tomcat:tomcat /opt/tomcat/webapps/SimpleCustomerApp-1.0.0-SNAPSHOT.war"
+                        ssh -p 2222 -o StrictHostKeyChecking=no root@10.168.133.22 "systemctl restart tomcat"
                     """
                 }
             }
