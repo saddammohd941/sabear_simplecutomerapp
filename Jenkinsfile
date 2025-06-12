@@ -53,7 +53,7 @@ pipeline {
                         -Dsonar.organization=saddammohd941 \\
                         -Dsonar.sources=src/main/java \\
                         -Dsonar.tests=src/test/java \\
-                        -Dsonar.binaries=target/classes \\
+                        -Dsonar.binaries=target/SimpleCustomerApp/WEB-INF/classes \\
                         -Dsonar.junit.reportsPath=target/surefire-reports \\
                         -Dsonar.jacoco.reportPaths=target/jacoco.exec \\
                         -Dsonar.login=\$SONAR_TOKEN \\
