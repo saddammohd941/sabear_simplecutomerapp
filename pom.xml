@@ -16,7 +16,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jacoco.version>0.8.11</jacoco.version>
+        <!-- Updated JaCoCo version -->
+        <jacoco.version>0.8.12</jacoco.version>
     </properties>
 
     <dependencies>
@@ -78,6 +79,13 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <!-- Explicitly configure XML report -->
+                        <configuration>
+                            <formats>
+                                <format>XML</format>
+                            </formats>
+                            <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
