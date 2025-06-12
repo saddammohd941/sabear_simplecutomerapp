@@ -72,7 +72,7 @@ pipeline {
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
-                        nexusUrl: 'http://10.168.138.60:8081', // Replace with your Nexus URL
+                        nexusUrl: '10.168.138.60:8081', // Replace with your Nexus URL
                         groupId: pom.groupId,
                         version: pom.version,
                         repository: pom.version.endsWith('-SNAPSHOT') ? 'maven-snapshots' : 'maven-releases', // or 'maven-snapshots'
