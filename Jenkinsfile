@@ -38,6 +38,8 @@ pipeline {
                 withCredentials([string(credentialsId: 'sonar', variable: 'SONAR_TOKEN')]) {
                     sh '''
                         export PATH=$PATH:/opt/sonar-scanner/bin
+			
+			ant compile
 
                         sonar-scanner -X \
                         -Dsonar.projectKey=simplecutomerapp \
