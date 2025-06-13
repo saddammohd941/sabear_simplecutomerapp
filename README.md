@@ -25,3 +25,25 @@
                         -Dsonar.login=\$SONAR_TOKEN \\
                         -Dsonar.host.url=https://sonarcloud.io
 ```
+
+### Resolution Steps
+
+1. **Add  Following in `settings.xml`**:
+   ```bash
+   vi /home/jenkins/.m2/settings.xml
+   ```
+   - Content:
+     ```
+     <?xml version="1.0" encoding="UTF-8"?>
+     <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+         <servers>
+             <server>
+                 <id>nexus-server</id>
+                 <username>admin</username>
+                 <password>admin@123</password>
+             </server>
+         </servers>
+     </settings>
+     ```
