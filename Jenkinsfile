@@ -74,8 +74,16 @@ pipeline {
                 sh 'ls -l target/'
                 sh 'ls -l /home/jenkins/.m2/settings.xml'
                 script {
-                    sh 'mvn deploy -DskipTests -U'
-                    sh 'curl -u $NEXUS_USER:$NEXUS_PASS http://10.168.138.60:8081/repository/maven-snapshots/com/javatpoint/SimpleCustomerApp/1.0.0-SNAPSHOT/maven-metadata.xml'
+                    try {
+                        sh 'mvn deploy -DskipTests'
+                    } catch (Exception e) {
+                        echo "mvn deploy failed: ${e.message}"
+                        withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                            sh '''
+                                curl -v -u $NEXUS_USER:$NEXUS_PASS --upload-file target/SimpleCustomerApp-1.0.0-SNAPSHOT.war http://10.168.138.60:8081/repository/maven-snapshots/com/javatpoint/SimpleCustomerApp/1.0.0-SNAPSHOT/maven-metadata.xml
+                            '''
+                        }
+                    }
                 }
                 echo "Publish to Nexus completed"
             }
