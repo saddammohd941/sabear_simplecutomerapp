@@ -80,7 +80,7 @@ pipeline {
                         echo "mvn deploy failed: ${e.message}"
                         withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
                             sh '''
-                                curl -v -u $NEXUS_USER:$NEXUS_PASS --upload-file target/SimpleCustomerApp-1.0.0-SNAPSHOT.war http://10.168.138.60:8081/repository/maven-snapshots/com/javatpoint/SimpleCustomerApp/1.0.0-SNAPSHOT/maven-metadata.xml
+                                sh 'curl -u $NEXUS_USER:$NEXUS_PASS http://10.168.138.60:8081/repository/maven-snapshots/com/javatpoint/SimpleCustomerApp/1.0.0-SNAPSHOT/maven-metadata.xml'
                             '''
                         }
                     }
