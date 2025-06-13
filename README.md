@@ -30,7 +30,7 @@
 
 1. **Add  Following in `settings.xml`**:
    ```bash
-   vi /home/jenkins/.m2/settings.xml
+   sudo vi /home/jenkins/.m2/settings.xml
    ```
    - Content:
      ```
