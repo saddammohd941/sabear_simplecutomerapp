@@ -24,17 +24,6 @@ pipeline {
                 git credentialsId: 'saddammohd941_credentials', url: 'https://github.com/saddammohd941/simplecustomerapp.git', branch: 'main'
             }
         }
-	stage('mvn build') {
-            steps {
-                echo "Starting mvn build stage"
-                script {
-                    sh 'mvn -B -DskipTests clean package'
-                    sh 'ls -l target/' // Debug
-                    sh '[ -f target/SimpleCustomerApp-1.0.0-SNAPSHOT.war ] || exit 1' // Fail if WAR missing
-                }
-                echo "mvn build completed"
-            }
-        }
         stage('SonarCloud') {
             steps {
                 withCredentials([string(credentialsId: 'sonar', variable: 'SONAR_TOKEN')]) {
@@ -67,23 +56,26 @@ pipeline {
                 }
             }
         }
+        stage('mvn build') {
+            steps {
+                echo "Starting mvn build stage"
+                script {
+                    sh 'mvn -B -DskipTests clean package'
+                    sh 'ls -l target/'
+                    sh '[ -f target/SimpleCustomerApp-1.0.0-SNAPSHOT.war ] || exit 1'
+                    sh 'unzip -l target/SimpleCustomerApp-1.0.0-SNAPSHOT.war | grep -E "Customer.jsp|index.html|style.css|Learning.html|Welcome.jsp|web.xml"'
+                }
+                echo "mvn build completed"
+            }
+        }
 	stage('Publish to Nexus') {
             steps {
                 echo "Starting Publish to Nexus stage"
                 sh 'ls -l target/'
                 sh 'ls -l /home/jenkins/.m2/settings.xml'
                 script {
-                    try {
-                        sh 'mvn deploy -DskipTests'
-                    } catch (Exception e) {
-                        echo "mvn deploy failed: ${e.message}"
-                        withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
-                            sh '''
-                                curl -v -u $NEXUS_USER:$NEXUS_PASS --upload-file target/SimpleCustomerApp-1.0.0-SNAPSHOT.war http://10.168.138.60:8081/repository/maven-snapshots/com/javatpoint/SimpleCustomerApp/1.0.0-SNAPSHOT/SimpleCustomerApp-1.0.0-SNAPSHOT.war
-                                curl -v -u $NEXUS_USER:$NEXUS_PASS --upload-file pom.xml http://10.168.138.60:8081/repository/maven-snapshots/com/javatpoint/SimpleCustomerApp/1.0.0-SNAPSHOT/SimpleCustomerApp-1.0.0-SNAPSHOT.pom
-                            '''
-                        }
-                    }
+                    sh 'mvn deploy -DskipTests -U'
+                    sh 'curl -u $NEXUS_USER:$NEXUS_PASS http://10.168.138.60:8081/repository/maven-snapshots/com/javatpoint/SimpleCustomerApp/1.0.0-SNAPSHOT/maven-metadata.xml'
                 }
                 echo "Publish to Nexus completed"
             }
